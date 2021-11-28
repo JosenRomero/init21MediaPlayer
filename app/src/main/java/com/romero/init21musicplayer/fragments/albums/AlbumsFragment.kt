@@ -1,4 +1,4 @@
-package com.romero.init21musicplayer.fragments
+package com.romero.init21musicplayer.fragments.albums
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
