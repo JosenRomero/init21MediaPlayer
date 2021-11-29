@@ -8,14 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.romero.init21musicplayer.R
 import com.romero.init21musicplayer.databinding.FragmentSongsBinding
+import com.romero.init21musicplayer.models.SongModel
 
 class SongsFragment : Fragment() {
 
     // FragmentSongsBinding - SongsFragment
     private var _binding: FragmentSongsBinding? = null
     private val binding get() = _binding!!
+
+    private val songsAdapter = SongsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +31,9 @@ class SongsFragment : Fragment() {
         val myPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {isGranted ->
 
             if(isGranted) {
-                Toast.makeText(requireContext(), "Granted", Toast.LENGTH_SHORT).show()
+
+                initRecyclerView()
+
             }else {
                 Toast.makeText(requireContext(), "You need accept permissions to use this app", Toast.LENGTH_SHORT).show()
             }
@@ -38,6 +44,21 @@ class SongsFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun initRecyclerView() {
+
+        val songs = arrayListOf<SongModel>(
+            SongModel("example 1", "1:00", "path 1"),
+            SongModel("example 2", "2:00", "path 2"),
+            SongModel("example 3", "3:00", "path 3")
+        )
+
+        songsAdapter.setSongs(songs)
+
+        binding.songsRecyclerview.adapter = songsAdapter
+        binding.songsRecyclerview.layoutManager = LinearLayoutManager(activity)
+
     }
 
 }
