@@ -2,6 +2,7 @@ package com.romero.init21musicplayer.fragments.songs
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -27,6 +28,8 @@ class SongsAdapter(): RecyclerView.Adapter<SongsAdapter.SongsViewHolder>() {
 
     override fun onBindViewHolder(holder: SongsViewHolder, position: Int) {
 
+        val currentSong = songs[position]
+
         holder.binding.apply {
 
             titleSong.text = songs[position].titleSong
@@ -36,9 +39,17 @@ class SongsAdapter(): RecyclerView.Adapter<SongsAdapter.SongsViewHolder>() {
             Glide.with(pathSong.context)
                 .load(songs[position].artUri)
                 .apply(RequestOptions())
-                .placeholder(R.drawable.ic_albums)
+                .placeholder(R.drawable.ic_music_note)
                 .centerCrop()
                 .into(pathSong)
+
+            itemRowLayout.setOnClickListener {
+
+                val action = SongsFragmentDirections.actionSongsFragmentToPlayerFragment(currentSong)
+
+                holder.itemView.findNavController().navigate(action)
+
+            }
 
         }
 
