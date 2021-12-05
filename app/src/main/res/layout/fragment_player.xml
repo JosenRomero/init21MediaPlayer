@@ -29,14 +29,14 @@
             android:id="@+id/elapsed_time_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0.11"
+            android:text="0.00"
             android:layout_marginStart="40dp"/>
 
         <TextView
             android:id="@+id/remaining_time_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-1.11"
+            android:text="Loading..."
             android:layout_marginStart="240dp"/>
 
     </LinearLayout>
