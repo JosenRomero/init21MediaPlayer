@@ -1,6 +1,5 @@
 package com.romero.init21musicplayer.fragments.player
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +15,7 @@ import com.romero.init21musicplayer.R
 import com.romero.init21musicplayer.databinding.FragmentPlayerBinding
 import com.romero.init21musicplayer.models.SongModel
 import com.romero.init21musicplayer.utils.Utils
+import com.romero.init21musicplayer.viewmodel.SongsViewModel
 
 class PlayerFragment : Fragment() {
 
@@ -27,12 +27,14 @@ class PlayerFragment : Fragment() {
     private val args by navArgs<PlayerFragmentArgs>()
 
     lateinit var currentSong: SongModel
-    private var mediaPlayer: MediaPlayer? = null
-    private var isPlaying: Boolean = false
     private var totalTimeSong: Int = 0
 
     private var handler = Handler(Looper.getMainLooper())
     lateinit var runnable: Runnable
+
+    companion object {
+        var songsViewModel: SongsViewModel = SongsViewModel()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +53,7 @@ class PlayerFragment : Fragment() {
         initSeekBar()
 
         binding.btnPlay.setOnClickListener {
-            if(isPlaying) pauseMusic()
+            if(songsViewModel.isPlaying.value == true) pauseMusic()
             else playMusic()
         }
 
@@ -70,13 +72,15 @@ class PlayerFragment : Fragment() {
 
         binding.nameSong.text = currentSong.titleSong
 
+        songsViewModel.isNowPlayingVisible.value = false
+
     }
 
     private fun initMediaPlayer() {
 
-        mediaPlayer = Utils.mediaPlayer(requireContext(), currentSong)
+        songsViewModel.initPlayer(requireContext(), currentSong)
 
-        totalTimeSong = mediaPlayer!!.duration
+        totalTimeSong = songsViewModel.mediaPlayer!!.duration
 
         playMusic()
 
@@ -92,7 +96,7 @@ class PlayerFragment : Fragment() {
 
                 override fun onProgressChanged(seekBar: SeekBar?, progress: Int, changed: Boolean) {
 
-                    if(changed) mediaPlayer!!.seekTo(progress)
+                    if(changed) songsViewModel.mediaPlayer!!.seekTo(progress)
 
                 }
 
@@ -105,7 +109,7 @@ class PlayerFragment : Fragment() {
 
         runnable = Runnable {
 
-            val currentPos = mediaPlayer!!.currentPosition
+            val currentPos = songsViewModel.mediaPlayer!!.currentPosition
 
             // update timeBarSong
             binding.timeBarSong.progress = currentPos
@@ -127,14 +131,12 @@ class PlayerFragment : Fragment() {
 
     private fun playMusic() {
         binding.btnPlay.setBackgroundResource(R.drawable.ic_pause)
-        isPlaying = true
-        mediaPlayer!!.start()
+        songsViewModel.playMusic()
     }
 
     private fun pauseMusic() {
         binding.btnPlay.setBackgroundResource(R.drawable.ic_play)
-        isPlaying = false
-        mediaPlayer!!.pause()
+        songsViewModel.stopMusic()
     }
 
 }

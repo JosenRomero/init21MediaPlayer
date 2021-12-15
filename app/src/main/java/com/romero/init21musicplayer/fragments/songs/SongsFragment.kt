@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.romero.init21musicplayer.databinding.FragmentSongsBinding
+import com.romero.init21musicplayer.fragments.player.PlayerFragment
 import com.romero.init21musicplayer.models.RequestCall
 import com.romero.init21musicplayer.viewmodel.SongsViewModel
 
@@ -24,7 +25,7 @@ class SongsFragment : Fragment() {
 
     private val songsAdapter = SongsAdapter()
 
-    private var songsViewModel: SongsViewModel = SongsViewModel()
+    var songsViewModel: SongsViewModel = PlayerFragment.songsViewModel
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
@@ -59,6 +60,8 @@ class SongsFragment : Fragment() {
 
         binding.songsRecyclerview.adapter = songsAdapter
         binding.songsRecyclerview.layoutManager = LinearLayoutManager(activity)
+
+        songsViewModel.isNowPlayingVisible.value = true
 
     }
 
