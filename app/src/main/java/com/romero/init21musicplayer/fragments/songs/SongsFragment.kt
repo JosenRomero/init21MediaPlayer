@@ -72,6 +72,8 @@ class SongsFragment : Fragment() {
 
             songsAdapter.setSongs(requestCall.songs)
 
+            songsViewModel.listSongs = requestCall.songs
+
         })
 
     }

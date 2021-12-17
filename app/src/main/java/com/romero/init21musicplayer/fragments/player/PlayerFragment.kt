@@ -43,18 +43,28 @@ class PlayerFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentPlayerBinding.inflate(inflater, container, false)
 
-        // if you need to understand the args.currentSong
+        // if you need to understand the args.indexCurrentSong
         // see my_nav.xml argument and
         // see SongsAdapter.kt itemRowLayout.setOnClickListener
-        currentSong = args.currentSong
+        currentSong = songsViewModel.listSongs[args.indexCurrentSong]
+
+        songsViewModel.isNowPlayingVisible.value = false
 
         setLayout()
         initMediaPlayer()
         initSeekBar()
 
+        binding.btnPreSong.setOnClickListener {
+            songsViewModel.preSong()
+        }
+
         binding.btnPlay.setOnClickListener {
             if(songsViewModel.isPlaying.value == true) pauseMusic()
             else playMusic()
+        }
+
+        binding.btnNextSong.setOnClickListener {
+            songsViewModel.nextSong()
         }
 
         return binding.root
@@ -72,13 +82,11 @@ class PlayerFragment : Fragment() {
 
         binding.nameSong.text = currentSong.titleSong
 
-        songsViewModel.isNowPlayingVisible.value = false
-
     }
 
     private fun initMediaPlayer() {
 
-        songsViewModel.initPlayer(requireContext(), currentSong)
+        songsViewModel.initPlayer(requireContext(), args.indexCurrentSong)
 
         totalTimeSong = songsViewModel.mediaPlayer!!.duration
 

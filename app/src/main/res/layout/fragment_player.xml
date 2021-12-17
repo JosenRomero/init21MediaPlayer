@@ -57,11 +57,33 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_play"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="40dp"
-        android:background="@drawable/ic_play"/>
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_preSong"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_pre_song"/>
+
+        <Button
+            android:id="@+id/btn_play"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_play"/>
+
+        <Button
+            android:id="@+id/btn_nextSong"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/ic_next_song"/>
+
+    </LinearLayout>
 
 </LinearLayout>

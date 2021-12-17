@@ -28,8 +28,6 @@ class SongsAdapter(): RecyclerView.Adapter<SongsAdapter.SongsViewHolder>() {
 
     override fun onBindViewHolder(holder: SongsViewHolder, position: Int) {
 
-        val currentSong = songs[position]
-
         holder.binding.apply {
 
             titleSong.text = songs[position].titleSong
@@ -45,7 +43,7 @@ class SongsAdapter(): RecyclerView.Adapter<SongsAdapter.SongsViewHolder>() {
 
             itemRowLayout.setOnClickListener {
 
-                val action = SongsFragmentDirections.actionSongsFragmentToPlayerFragment(currentSong)
+                val action = SongsFragmentDirections.actionSongsFragmentToPlayerFragment(indexCurrentSong = position)
 
                 holder.itemView.findNavController().navigate(action)
 
