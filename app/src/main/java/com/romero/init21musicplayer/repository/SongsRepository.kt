@@ -8,6 +8,7 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
+import com.romero.init21musicplayer.models.AlbumModel
 import com.romero.init21musicplayer.models.RequestCall
 import com.romero.init21musicplayer.models.SongModel
 import com.romero.init21musicplayer.utils.Constants
@@ -29,6 +30,24 @@ class SongsRepository {
         val artUri = Uri.withAppendedPath(albumUri, albumId).toString()
 
         return SongModel(titleSong, durationSong, pathSong, artUri)
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    @SuppressLint("Range")
+    fun convertToAlbum(cursor: Cursor): AlbumModel {
+
+        val nameAlbum = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM))
+        var artistAlbum = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
+
+        if(artistAlbum == "<unknown>") artistAlbum = "Unknown Artist"
+
+        // img
+        val albumId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID))
+        val albumUri = Uri.parse(Constants.ALBUM_URI)
+        val artUri = Uri.withAppendedPath(albumUri, albumId).toString()
+
+        return AlbumModel(albumId, nameAlbum, artistAlbum, artUri)
 
     }
 
@@ -81,6 +100,50 @@ class SongsRepository {
         r.songs = songs
 
         mLiveData.postValue(r)
+
+        return mLiveData
+
+    }
+
+    @SuppressLint("Recycle")
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun fetchAllAlbums(c: ContentResolver): MutableLiveData<ArrayList<AlbumModel>> {
+
+        val albums = ArrayList<AlbumModel>()
+
+        val mLiveData = MutableLiveData<ArrayList<AlbumModel>>()
+
+        val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        val projection = arrayOf(
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.ARTIST,
+        )
+        val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0"
+        val sortOrder = "${MediaStore.Audio.Media.ALBUM} ASC"
+
+        val cursor = c.query(
+            uri,
+            projection,
+            selection,
+            null,
+            sortOrder,
+            null
+        )
+
+        if(cursor != null && cursor.moveToFirst()) {
+
+            do {
+
+                albums.add(convertToAlbum(cursor))
+
+            } while (cursor.moveToNext())
+
+            cursor.close()
+
+        }
+
+        mLiveData.postValue(albums)
 
         return mLiveData
 

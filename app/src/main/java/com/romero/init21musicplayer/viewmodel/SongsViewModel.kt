@@ -8,9 +8,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.romero.init21musicplayer.models.AlbumModel
 import com.romero.init21musicplayer.models.RequestCall
 import com.romero.init21musicplayer.models.SongModel
 import com.romero.init21musicplayer.repository.SongsRepository
+import java.util.ArrayList
 
 class SongsViewModel(): ViewModel() {
 
@@ -26,6 +28,13 @@ class SongsViewModel(): ViewModel() {
     fun fetchAllSongs(c: ContentResolver): MutableLiveData<RequestCall> {
 
         return songRepo.fetchAllSongs(c)
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun fetchAllAlbums(c: ContentResolver): MutableLiveData<ArrayList<AlbumModel>> {
+
+        return songRepo.fetchAllAlbums(c)
 
     }
 
