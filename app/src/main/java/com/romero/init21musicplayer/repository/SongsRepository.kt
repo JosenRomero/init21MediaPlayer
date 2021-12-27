@@ -135,7 +135,11 @@ class SongsRepository {
 
             do {
 
-                albums.add(convertToAlbum(cursor))
+                val newAlbum: AlbumModel = convertToAlbum(cursor)
+
+                if(!albums.any { it -> it.name == newAlbum.name }) {
+                    albums.add(newAlbum)
+                }
 
             } while (cursor.moveToNext())
 

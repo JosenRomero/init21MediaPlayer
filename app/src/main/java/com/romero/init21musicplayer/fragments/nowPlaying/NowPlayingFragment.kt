@@ -34,8 +34,10 @@ class NowPlayingFragment : Fragment() {
     private fun initLayout() {
 
         songsViewModel.isNowPlayingVisible.observe(viewLifecycleOwner, Observer { isVisible ->
-            if(isVisible && songsViewModel.mediaPlayer != null) binding.root.visibility = View.VISIBLE
-            else binding.root.visibility = View.INVISIBLE
+            if(isVisible && songsViewModel.mediaPlayer != null) {
+                binding.root.visibility = View.VISIBLE
+                binding.nameSongPlaying.text = songsViewModel.listSongs[songsViewModel.indexCurrentSong!!].titleSong
+            } else binding.root.visibility = View.INVISIBLE
         })
 
         songsViewModel.isPlaying.observe(viewLifecycleOwner, Observer { isPlaying ->

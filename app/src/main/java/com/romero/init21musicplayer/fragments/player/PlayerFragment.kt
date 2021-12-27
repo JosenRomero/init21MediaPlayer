@@ -26,7 +26,6 @@ class PlayerFragment : Fragment() {
     // PlayerFragmentArgs - PlayerFragment
     private val args by navArgs<PlayerFragmentArgs>()
 
-    lateinit var currentSong: SongModel
     private var totalTimeSong: Int = 0
 
     private var handler = Handler(Looper.getMainLooper())
@@ -46,16 +45,16 @@ class PlayerFragment : Fragment() {
         // if you need to understand the args.indexCurrentSong
         // see my_nav.xml argument and
         // see SongsAdapter.kt itemRowLayout.setOnClickListener
-        currentSong = songsViewModel.listSongs[args.indexCurrentSong]
 
         songsViewModel.isNowPlayingVisible.value = false
 
-        setLayout()
         initMediaPlayer()
+        setLayout()
         initSeekBar()
 
         binding.btnPreSong.setOnClickListener {
             songsViewModel.preSong()
+            setLayout()
         }
 
         binding.btnPlay.setOnClickListener {
@@ -65,12 +64,15 @@ class PlayerFragment : Fragment() {
 
         binding.btnNextSong.setOnClickListener {
             songsViewModel.nextSong()
+            setLayout()
         }
 
         return binding.root
     }
 
     private fun setLayout() {
+
+        val currentSong: SongModel = songsViewModel.listSongs[songsViewModel.indexCurrentSong!!]
 
         // img
         Glide.with(this)
