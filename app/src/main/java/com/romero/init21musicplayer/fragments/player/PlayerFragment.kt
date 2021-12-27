@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.romero.init21musicplayer.R
 import com.romero.init21musicplayer.databinding.FragmentPlayerBinding
 import com.romero.init21musicplayer.models.SongModel
@@ -75,12 +73,7 @@ class PlayerFragment : Fragment() {
         val currentSong: SongModel = songsViewModel.listSongs[songsViewModel.indexCurrentSong!!]
 
         // img
-        Glide.with(this)
-            .load(currentSong.artUri)
-            .apply(RequestOptions())
-            .placeholder(R.drawable.ic_music_note)
-            .centerCrop()
-            .into(binding.imgSong)
+        Utils.loadImg(currentSong.artUri, R.drawable.ic_music_note, binding.imgSong)
 
         binding.nameSong.text = currentSong.titleSong
 

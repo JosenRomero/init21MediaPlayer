@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer
 import com.romero.init21musicplayer.R
 import com.romero.init21musicplayer.databinding.FragmentNowPlayingBinding
 import com.romero.init21musicplayer.fragments.player.PlayerFragment
+import com.romero.init21musicplayer.models.SongModel
+import com.romero.init21musicplayer.utils.Utils
 import com.romero.init21musicplayer.viewmodel.SongsViewModel
 
 class NowPlayingFragment : Fragment() {
@@ -34,10 +36,8 @@ class NowPlayingFragment : Fragment() {
     private fun initLayout() {
 
         songsViewModel.isNowPlayingVisible.observe(viewLifecycleOwner, Observer { isVisible ->
-            if(isVisible && songsViewModel.mediaPlayer != null) {
-                binding.root.visibility = View.VISIBLE
-                binding.nameSongPlaying.text = songsViewModel.listSongs[songsViewModel.indexCurrentSong!!].titleSong
-            } else binding.root.visibility = View.INVISIBLE
+            if(isVisible && songsViewModel.mediaPlayer != null) setLayout()
+            else binding.root.visibility = View.INVISIBLE
         })
 
         songsViewModel.isPlaying.observe(viewLifecycleOwner, Observer { isPlaying ->
@@ -49,6 +49,19 @@ class NowPlayingFragment : Fragment() {
             if(songsViewModel.isPlaying.value == true) songsViewModel.stopMusic()
             else songsViewModel.playMusic()
         }
+
+    }
+
+    private fun setLayout() {
+
+        val currentSong: SongModel = songsViewModel.listSongs[songsViewModel.indexCurrentSong!!]
+
+        binding.root.visibility = View.VISIBLE // nowPlayingFragment visible
+
+        // img
+        Utils.loadImg(currentSong.artUri, R.drawable.ic_music_note, binding.imgSongPlaying)
+
+        binding.nameSongPlaying.text = currentSong.titleSong
 
     }
 

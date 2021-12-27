@@ -4,11 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.romero.init21musicplayer.R
 import com.romero.init21musicplayer.databinding.SongRowBinding
 import com.romero.init21musicplayer.models.SongModel
+import com.romero.init21musicplayer.utils.Utils
 import java.util.concurrent.TimeUnit
 
 class SongsAdapter(): RecyclerView.Adapter<SongsAdapter.SongsViewHolder>() {
@@ -34,12 +33,7 @@ class SongsAdapter(): RecyclerView.Adapter<SongsAdapter.SongsViewHolder>() {
             durationSong.text = toMinAndSecond(songs[position].durationSong.toLong())
 
             // img
-            Glide.with(pathSong.context)
-                .load(songs[position].artUri)
-                .apply(RequestOptions())
-                .placeholder(R.drawable.ic_music_note)
-                .centerCrop()
-                .into(pathSong)
+            Utils.loadImg(songs[position].artUri, R.drawable.ic_music_note, pathSong)
 
             itemRowLayout.setOnClickListener {
 

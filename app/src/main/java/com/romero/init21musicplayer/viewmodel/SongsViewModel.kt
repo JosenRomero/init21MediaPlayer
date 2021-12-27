@@ -39,10 +39,17 @@ class SongsViewModel(): ViewModel() {
     }
 
     fun initPlayer(context: Context, index: Int) {
+
         val pathSong = listSongs[index].pathSong
         indexCurrentSong = index
-        mediaPlayer = MediaPlayer()
-        mediaPlayer = MediaPlayer.create(context, Uri.parse(pathSong))
+
+        if(mediaPlayer == null) {
+            mediaPlayer = MediaPlayer()
+            mediaPlayer = MediaPlayer.create(context, Uri.parse(pathSong))
+        }else {
+            newSong(pathSong)
+        }
+
     }
 
     fun playMusic() {

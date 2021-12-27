@@ -3,11 +3,10 @@ package com.romero.init21musicplayer.fragments.albums
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.romero.init21musicplayer.R
 import com.romero.init21musicplayer.databinding.AlbumRowBinding
 import com.romero.init21musicplayer.models.AlbumModel
+import com.romero.init21musicplayer.utils.Utils
 
 class AlbumsAdapter(): RecyclerView.Adapter<AlbumsAdapter.AlbumsViewHolder>() {
 
@@ -29,12 +28,7 @@ class AlbumsAdapter(): RecyclerView.Adapter<AlbumsAdapter.AlbumsViewHolder>() {
         holder.binding.apply {
 
             // img
-            Glide.with(artAlbum.context)
-                .load(albumsList[position].artUri)
-                .apply(RequestOptions())
-                .placeholder(R.drawable.ic_music_note)
-                .centerCrop()
-                .into(artAlbum)
+            Utils.loadImg(albumsList[position].artUri, R.drawable.ic_music_note, artAlbum)
 
             nameAlbum.text = albumsList[position].name
             artistAlbum.text = albumsList[position].artist
